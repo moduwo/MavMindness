@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MavMindness | Student Wellness</title>
+
+  
+  <style>
+    :root {
+   --red: #8B0000;
+   --bright-red: #C62828;
+   --soft-pink: #FCE4E4;
+   --background: #FFF5F5;
+   --white: #FFFFFF;
+   --text: #332222;
+   --muted: #795D5D;
+   --border: #EBCACA;
+   --soft-pink: #FBE9E7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--navy);
+      color: rgb(226, 12, 12);
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    header p {
+      margin: 3px 0 0;
+      color: #dd0c0c;
+      font-size: 13px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: rgb(202, 5, 5);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      width: 86%;
+      max-width: 1100px;
+      margin: 32px auto;
+    }
+
+    .welcome {
+      background: var(--light-blue);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .welcome h2 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 28px;
+    }
+
+    .welcome p {
+      margin: 0;
+      color: #40566c;
+    }
+
+    .section-title {
+      color: var(--navy);
+      margin: 28px 0 14px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      color: var(--navy);
+      margin-top: 0;
+    }
+
+    .stat {
+      font-size: 30px;
+      font-weight: bold;
+      color: var(--blue);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .mood-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 12px 0 20px;
+    }
+
+    .mood-option {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      flex: 1;
+      min-width: 75px;
+      text-align: center;
+    }
+
+    .mood-option:hover,
+    .mood-option:focus {
+      background: var(--light-blue);
+      border-color: var(--blue);
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 16px 0 6px;
+    }
+
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font: inherit;
+      background: white;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--blue);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .tag-list label {
+      margin: 0;
+      font-weight: normal;
+      background: var(--light-blue);
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .tag-list input {
+      margin-right: 5px;
+    }
+
+    .button {
+      display: inline-block;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      background: var(--blue);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .button:hover {
+      background: var(--navy);
+    }
+
+    .resource-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .resource {
+      padding: 18px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .resource h3 {
+      margin-top: 0;
+      color: var(--navy);
+    }
+
+    .resource a {
+      color: var(--blue);
+    }
+
+    .notice {
+      background: var(--green);
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 45px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        padding: 20px 6%;
+      }
+
+      main {
+        width: 92%;
+      }
+
+      .dashboard,
+      .resource-list {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome h2 {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div>
+      <h1>MavMindness</h1>
+      <p>Your student wellness space</p>
+    </div>
+
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#checkin">Daily Check-In</a>
+      <a href="#journal">Journal</a>
+      <a href="#resources">Resources</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h2>A moment for yourself.</h2>
+      <p>
+        College life can be challenging. Take a moment to check in
+        with yourself, recognize your feelings, and find support
+        when you need it.
+      </p>
+    </section>
+
+    <section id="dashboard">
+      <h2 class="section-title">Your Wellness Dashboard</h2>
+
+      <div class="dashboard">
+        <div class="card">
+          <h3>Today's Mood</h3>
+          <div class="stat">—</div>
+          <p class="muted">Complete your check-in to get started.</p>
+        </div>
+
+        <div class="card">
+          <h3>Stress Level</h3>
+          <div class="stat">— / 10</div>
+          <p class="muted">Notice how your stress changes over time.</p>
+        </div>
+
+        <div class="card">
+          <h3>Sleep</h3>
+          <div class="stat">— hrs</div>
+          <p class="muted">Reflect on your rest and daily routine.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkin">
+      <h2 class="section-title">Daily Check-In</h2>
+
+      <form class="card" id="checkin-form">
+        <h3>How are you feeling today?</h3>
+        <p class="muted">There are no right or wrong answers.</p>
+
+        <label>Choose your mood</label>
+        <div class="mood-options">
+          <button type="button" class="mood-option"
+                  data-mood="Great">😊<br>Great</button>
+          <button type="button" class="mood-option"
+                  data-mood="Good">🙂<br>Good</button>
+          <button type="button" class="mood-option"
+                  data-mood="Okay">😐<br>Okay</button>
+          <button type="button" class="mood-option"
+                  data-mood="Low">😔<br>Low</button>
+          <button type="button" class="mood-option"
+                  data-mood="Difficult">😣<br>Difficult</button>
+        </div>
+
+        <input type="hidden" name="mood" id="mood">
+
+        <label for="stress">How stressed do you feel? (1–10)</label>
+        <input type="range" id="stress" name="stress"
+               min="1" max="10" value="5">
+        <p>Stress level: <strong id="stress-value">5</strong>/10</p>
+
+        <label for="sleep">How many hours did you sleep?</label>
+        <input type="number" id="sleep" name="sleep"
+               min="0" max="24" step="0.5" placeholder="e.g. 7.5">
+
+        <label for="meals">How many meals did you eat today?</label>
+        <input type="number" id="meals" name="meals"
+               min="0" max="20" step="1" placeholder="Enter number">
+
+        <label>What may be affecting your mood?</label>
+        <div class="tag-list">
+          <label><input type="checkbox" name="tags" value="School"> School</label>
+          <label><input type="checkbox" name="tags" value="Work"> Work</label>
+          <label><input type="checkbox" name="tags" value="Sleep"> Sleep</label>
+          <label><input type="checkbox" name="tags" value="Relationships"> Relationships</label>
+          <label><input type="checkbox" name="tags" value="Finances"> Finances</label>
+          <label><input type="checkbox" name="tags" value="Health"> Health</label>
+          <label><input type="checkbox" name="tags" value="Other"> Other</label>
+        </div>
+
+        <section id="journal">
+          <label for="journal-entry">
+            Would you like to write about your day? (Optional)
+          </label>
+          <textarea id="journal-entry" name="journal"
+                    rows="5"
+                    placeholder="Write whatever is on your mind..."></textarea>
+        </section>
+
+        <p class="muted">
+          Your feelings are personal. This demo does not save your entries
+          or send them to a counselor.
+        </p>
+
+        <button class="button" type="submit">Complete Check-In</button>
+        <p id="form-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="resources">
+      <h2 class="section-title">Find Support</h2>
+      <p>
+        You don't have to figure everything out on your own.
+        Support is available for many challenges students face.
+      </p>
+
+      <div class="resource-list">
+        <div class="resource">
+          <h3>Academic Stress</h3>
+          <p>Explore tutoring, study support, and academic advising.</p> 
+          <a href="https://www.unomaha.edu/advising/index.php" target="_blank"
+             rel="noopener noreferrer">Explore support options</a>
+        </div>
+
+        <div class="resource">
+          <h3>Campus Counseling</h3>
+          <p>Consider contacting your school's counseling center
+             or student wellness office.</p>
+          <a href="https://findahelpline.com/"
+             target="_blank" rel="noopener noreferrer">
+            Find support resources
+          </a>
+        </div>
+
+        <div class="resource">
+          <h3>Grief and Loneliness</h3>
+          <p>Find someone to talk to and explore emotional support.</p>
+          <a href="https://findahelpline.com/"
+             target="_blank" rel="noopener noreferrer">
+            Explore support options
+          </a>
+        </div>
+
+        <div class="resource">
+          <h3>Urgent Mental Health Support</h3>
+          <p>In the United States, call or text 988 for the
+             Suicide & Crisis Lifeline.</p>
+          <a href="https://988lifeline.org/"
+             target="_blank" rel="noopener noreferrer">
+            Visit the 988 Lifeline
+          </a>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>A reminder:</strong> MavMindness is a wellness
+        tracking tool, not a diagnostic system or a replacement
+        for professional care.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>MavMindness &copy; 2026 | Student Wellness Project</p>
+    <p>Check in with yourself. Progress at your own pace.</p>
+  </footer>
+
+  <script>
+    const moodButtons = document.querySelectorAll(".mood-option");
+    const moodInput = document.getElementById("mood");
+    const stressInput = document.getElementById("stress");
+    const stressValue = document.getElementById("stress-value");
+    const form = document.getElementById("checkin-form");
+    const formMessage = document.getElementById("form-message");
+
+    moodButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        moodInput.value = button.dataset.mood;
+
+        moodButtons.forEach(item => {
+          item.style.borderColor = "#dce4ec";
+          item.setAttribute("aria-pressed", "false");
+        });
+
+        button.style.borderColor = "#245b83";
+        button.setAttribute("aria-pressed", "true");
+      });
+    });
+
+    stressInput.addEventListener("input", () => {
+      stressValue.textContent = stressInput.value;
+    });
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+
+      if (!moodInput.value) {
+        formMessage.textContent = "Please select a mood first.";
+        return;
+      }
+
+      formMessage.textContent =
+        "Thank you for checking in with yourself. " +
+        "This demonstration does not save your responses.";
+    });
+  </script>
+
+</body>
+</html>
