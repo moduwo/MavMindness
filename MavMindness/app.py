@@ -51,6 +51,7 @@ def index():
 @app.route('/submit_mood', methods=['POST'])
 def submit_mood():
     data = request.get_json(silent=True) or request.form
+
     mood = data.get('mood')
     stress = data.get('stress')
     sleep = data.get('sleep')
@@ -59,28 +60,46 @@ def submit_mood():
         return jsonify({'error': 'Mood is required'}), 400
 
     try:
-        stress = int(stress) if stress is not None else None
-        sleep = float(sleep) if sleep is not None else None
-    except ValueError:
-        return jsonify({'error': 'Stress must be an integer and sleep must be a number'}), 400
+        stress = int(stress) if stress not in (None, '') else None
+        sleep = float(sleep) if sleep not in (None, '') else None
+    except (TypeError, ValueError):
+        return jsonify({
+            'error': 'Stress must be an integer and sleep must be a number'
+        }), 400
 
-    if stress is not None and (stress < 1 or stress > 10):
+    if stress is not None and not 1 <= stress <= 10:
         return jsonify({'error': 'Stress must be between 1 and 10'}), 400
 
-    if sleep is not None and (sleep < 0 or sleep > 24):
-        return jsonify({'error': 'Sleep must be a number between 0 and 24'}), 400  
+    if sleep is not None and not 0 <= sleep <= 24:
+        return jsonify({'error': 'Sleep must be between 0 and 24'}), 400
 
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO mood_entries (mood, stress, sleep) VALUES (?, ?, ?)', (mood, stress, sleep))
 
-    conn.commit()
-    conn.close()
+    try:
+        cursor = conn.execute(
+            '''INSERT INTO mood_entries (mood, stress, sleep)
+               VALUES (?, ?, ?)''',
+            (mood, stress, sleep)
+        )
 
-    result = [dict(entry) for entry in cursor.execute('SELECT * FROM mood_entries ORDER BY timestamp DESC LIMIT 1')]
+        # Fetch the inserted row BEFORE closing the connection
+        entry = conn.execute(
+            '''SELECT id, mood, stress, sleep, timestamp
+               FROM mood_entries WHERE id = ?''',
+            (cursor.lastrowid,)
+        ).fetchone()
+
+        conn.commit()
+        result = dict(entry)
+
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
 
     if request.is_json:
-        return jsonify(result[0]), 200
+        return jsonify(result), 201
 
     return redirect(url_for('index'))
 

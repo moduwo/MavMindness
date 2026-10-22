@@ -470,10 +470,9 @@
     const form = document.getElementById("checkin-form");
     const formMessage = document.getElementById("form-message");
 
-    form.addEventListener("submit", function(event) {
       // Prevent the page from reloading
       
-form.addEventListener("submit", async function(event) {
+  form.addEventListener("submit", async function(event) {
   event.preventDefault();
 
   if (!moodInput.value) {
@@ -520,6 +519,11 @@ form.addEventListener("submit", async function(event) {
 
   } catch (error) {
     formMessage.textContent = error.message;
+    formMessage.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+    console.error("Error submitting check-in:", error);
   }
 });
     moodButtons.forEach(button => {
