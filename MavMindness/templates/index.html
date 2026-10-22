@@ -466,39 +466,62 @@
     const moodInput = document.getElementById("mood");
     const stressInput = document.getElementById("stress");
     const stressValue = document.getElementById("stress-value");
+    const sleepInput = document.getElementById("sleep");
     const form = document.getElementById("checkin-form");
     const formMessage = document.getElementById("form-message");
 
     form.addEventListener("submit", function(event) {
       // Prevent the page from reloading
-      event.preventDefault();
+      
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
 
-      if (!moodInput.value) {
-        formMessage.textContent = "Please select your mood.";
-        formMessage.style.color = "var(--red)";
+  if (!moodInput.value) {
+    formMessage.textContent = "Please select your mood.";
+    formMessage.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+    return;
+  }
 
-        formMessage.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
+  try {
+    const response = await fetch("/submit_mood", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
 
-        return;
-      }
-
-      formMessage.textContent = "Check-in submitted successfully!";
-      formMessage.style.color = "var(--green)";
-
-      formMessage.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-
-      document.getElementById("latest-mood").textContent = data.mood;
-      document.getElementById("latest-stress").textContent = data.stress + " / 10";
-      document.getElementById("latest-sleep").textContent = data.sleep + " hrs";
-
+      body: JSON.stringify({
+        mood: moodInput.value,
+        stress: stressInput.value,
+        sleep: sleepInput.value
+      })
     });
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Could not save your check-in.");
+    }
+
+    // Update the dashboard
+    document.getElementById("latest-mood").textContent = data.mood;
+    document.getElementById("latest-stress").textContent =
+      data.stress != null ? `${data.stress} / 10` : "— / 10";
+    document.getElementById("latest-sleep").textContent =
+      data.sleep != null ? `${data.sleep} hrs` : "— hrs";
+
+    formMessage.textContent = "Check-in saved successfully!";
+    formMessage.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+  } catch (error) {
+    formMessage.textContent = error.message;
+  }
+});
     moodButtons.forEach(button => {
       button.addEventListener("click", () => {
         moodInput.value = button.dataset.mood;
