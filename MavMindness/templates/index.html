@@ -233,6 +233,21 @@
       color: var(--blue);
     }
 
+    .button {
+      background-color: #C62828;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background-color: #8B0000;
+    }
+
     .notice {
       background: var(--green);
       padding: 16px;
@@ -341,6 +356,7 @@
           <button type="button" class="mood-option"
                   data-mood="Difficult">😣<br>Difficult</button>
         </div>
+        <p class="muted">Select the emoji that best represents your mood.</p>
 
         <input type="hidden" name="mood" id="mood">
 
@@ -445,13 +461,38 @@
     <p>Check in with yourself. Progress at your own pace.</p>
   </footer>
 
-  <script>
+<script>
     const moodButtons = document.querySelectorAll(".mood-option");
     const moodInput = document.getElementById("mood");
     const stressInput = document.getElementById("stress");
     const stressValue = document.getElementById("stress-value");
     const form = document.getElementById("checkin-form");
     const formMessage = document.getElementById("form-message");
+
+    form.addEventListener("submit", function(event) {
+      // Prevent the page from reloading
+      event.preventDefault();
+
+      if (!moodInput.value) {
+        formMessage.textContent = "Please select your mood.";
+        formMessage.style.color = "var(--red)";
+
+        formMessage.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        return;
+      }
+
+      formMessage.textContent = "Check-in submitted successfully!";
+      formMessage.style.color = "var(--green)";
+
+      formMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    });
 
     moodButtons.forEach(button => {
       button.addEventListener("click", () => {
@@ -470,19 +511,6 @@
     stressInput.addEventListener("input", () => {
       stressValue.textContent = stressInput.value;
     });
-
-    form.addEventListener("submit", event => {
-      event.preventDefault();
-
-      if (!moodInput.value) {
-        formMessage.textContent = "Please select a mood first.";
-        return;
-      }
-
-      formMessage.textContent =
-        "Thank you for checking in with yourself";
-    });
-  </script>
-
+</script>
 </body>
 </html>
