@@ -318,19 +318,19 @@
       <div class="dashboard">
         <div class="card">
           <h3>Today's Mood</h3>
-          <div class="stat">—</div>
+          <div class="stat" id="latest-mood">—</div>
           <p class="muted">Complete your check-in to get started.</p>
         </div>
 
         <div class="card">
           <h3>Stress Level</h3>
-          <div class="stat">— / 10</div>
+          <div class="stat" id="latest-stress">— / 10</div>
           <p class="muted">Notice how your stress changes over time.</p>
         </div>
 
         <div class="card">
           <h3>Sleep</h3>
-          <div class="stat">— hrs</div>
+          <div class="stat" id="latest-sleep">— hrs</div>
           <p class="muted">Reflect on your rest and daily routine.</p>
         </div>
       </div>
@@ -492,6 +492,11 @@
         behavior: "smooth",
         block: "center"
       });
+
+      document.getElementById("latest-mood").textContent = data.mood;
+      document.getElementById("latest-stress").textContent = data.stress + " / 10";
+      document.getElementById("latest-sleep").textContent = data.sleep + " hrs";
+
     });
 
     moodButtons.forEach(button => {

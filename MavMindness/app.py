@@ -62,6 +62,7 @@ def get_mood_entries():
     entries_list = [{'id': row['id'], 'mood': row['mood'], 'timestamp': row['timestamp']} for row in entries]
     return jsonify(entries_list)
 
+
 if __name__ == '__main__':
     initialize_database()
     app.run(debug=True)
