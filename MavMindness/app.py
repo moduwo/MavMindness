@@ -17,6 +17,8 @@ def initialize_database():
         CREATE TABLE IF NOT EXISTS mood_entries (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             mood TEXT NOT NULL,
+            stress INTEGER,
+            sleep REAL,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
