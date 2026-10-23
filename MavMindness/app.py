@@ -108,24 +108,10 @@ def latest_checkin():
     try: 
         conn = get_db_connection()
         entry = conn.execute(
-            'SELECT * FROM mood_entries ORDER BY timestamp DESC LIMIT 1'
+            'SELECT * FROM mood_entries ORDER BY id DESC LIMIT 1'
         ).fetchone()
     finally:
         conn.close()
-
-    if entry is None:
-        return jsonify({'error': 'No mood entries found'}), 404
-
-    return jsonify(dict(entry)), 200
-
-@app.route('/get_mood_data', methods=['GET'])
-def get_mood_data():
-    try:
-        app.route('/latest_checkin', methods=['GET'])
-def latest_checkin():
-    conn = get_db_connection()
-    entry = conn.execute('SELECT * FROM mood_entries ORDER BY timestamp DESC LIMIT 1').fetchone()
-    conn.close()
 
     if entry is None:
         return jsonify({'error': 'No mood entries found'}), 404
