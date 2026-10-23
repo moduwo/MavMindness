@@ -1,9 +1,12 @@
+import os
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 import json
 
 app = Flask(__name__)
-DATABASE = 'mavmindness.db'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, 'mavmindness_new.db')
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
