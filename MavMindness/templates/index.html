@@ -525,6 +525,27 @@
     });
     console.error("Error submitting check-in:", error);
   }
+
+  async function fetchLatestCheckin() {
+    try {
+      const response = await fetch("/latest_checkin");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Could not fetch latest check-in.");
+      }
+
+      document.getElementById("latest-mood").textContent =
+        data.mood || "—";
+      document.getElementById("latest-stress").textContent =
+        data.stress != null ? `${data.stress} / 10` : "— / 10";
+      document.getElementById("latest-sleep").textContent =
+        data.sleep != null ? `${data.sleep} hrs` : "— hrs";
+
+    } catch (error) {
+      console.error("Error fetching latest check-in:", error);
+    }
+  }
 });
     moodButtons.forEach(button => {
       button.addEventListener("click", () => {

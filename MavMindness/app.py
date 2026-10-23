@@ -103,8 +103,8 @@ def submit_mood():
 
     return redirect(url_for('index'))
 
-@app.route('/get_latest_mood', methods=['GET'])
-def get_latest_mood():
+@app.route('/latest_checkin', methods=['GET'])
+def latest_checkin():
     conn = get_db_connection()
     entry = conn.execute('SELECT * FROM mood_entries ORDER BY timestamp DESC LIMIT 1').fetchone()
     conn.close()
