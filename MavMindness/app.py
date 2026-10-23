@@ -105,6 +105,24 @@ def submit_mood():
 
 @app.route('/latest_checkin', methods=['GET'])
 def latest_checkin():
+    try: 
+        conn = get_db_connection()
+        entry = conn.execute(
+            'SELECT * FROM mood_entries ORDER BY timestamp DESC LIMIT 1'
+        ).fetchone()
+    finally:
+        conn.close()
+
+    if entry is None:
+        return jsonify({'error': 'No mood entries found'}), 404
+
+    return jsonify(dict(entry)), 200
+
+@app.route('/get_mood_data', methods=['GET'])
+def get_mood_data():
+    try:
+        app.route('/latest_checkin', methods=['GET'])
+def latest_checkin():
     conn = get_db_connection()
     entry = conn.execute('SELECT * FROM mood_entries ORDER BY timestamp DESC LIMIT 1').fetchone()
     conn.close()
@@ -117,16 +135,20 @@ def latest_checkin():
 @app.route('/get_mood_data', methods=['GET'])
 def get_mood_data():
     conn = get_db_connection()
-    rows = conn.execute('SELECT * FROM mood_entries ORDER BY timestamp DESC').fetchall()
-    conn.close()
+    try:
+        rows = conn.execute('SELECT mood, COUNT(*) as count FROM mood_entries GROUP BY mood').fetchall()
+    finally:
+        conn.close()
 
     return jsonify({row['mood']: row['count'] for row in rows}), 200
 
 @app.route('/get_mood_entries', methods=['GET'])
 def get_mood_entries():
     conn = get_db_connection()
-    rows = conn.execute('SELECT * FROM mood_entries ORDER BY timestamp DESC').fetchall()
-    conn.close()
+    try:
+        rows = conn.execute('SELECT * FROM mood_entries ORDER BY id DESC').fetchall()
+    finally:
+        conn.close()
 
     return jsonify([dict(row) for row in rows]), 200
 
